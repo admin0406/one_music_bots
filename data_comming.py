@@ -7,7 +7,6 @@ requests.packages.urllib3.disable_warnings()
 
 
 def download(url, file_path):
-    # verify=False 这一句是为了有的网站证书问题，为True会报错
     r = requests.get(url, stream=True, verify=False)
     if r.status_code == 200:
         chunk_size = 1024
