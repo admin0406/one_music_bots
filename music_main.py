@@ -1,7 +1,7 @@
 # *--conding:utf-8--*
 import os, re
 import random
-
+from telebot import logger
 import redis
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import *
@@ -13,7 +13,6 @@ requests.adapters.DEFAULT_RETRIES = 5
 r = requests.session()
 r.keep_alive = False
 bot = telebot.TeleBot(token=API_TOKEN)
-
 
 
 # 底部标签
@@ -32,16 +31,20 @@ def bottom_markup():
                    InlineKeyboardButton('我要上传/upload', callback_data='upload'),
                    InlineKeyboardButton('联系客服/Customer service', url=my_url))
         return markup
-    except:
-        pass
+    except Exception as e:
+        logger.error(e)
+        return
+
+
 @bot.message_handler(commands=['leave'])
 def leave_group(message):
     try:
-        bot.send_message(message.chat.id,'我要走了，各位小姐姐拜拜')
+        bot.send_message(message.chat.id, '我要走了，各位小姐姐拜拜')
         bot.leave_chat(message.chat.id)
-    except:
-        pass
+    except Exception as e:
+        logger.error(e)
         return
+
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
@@ -49,7 +52,8 @@ def handle_start(message):
         bot.send_message(message.chat.id, "🌹欢迎来到天山一枝梅的音乐空间\n你可以直接输入歌名查找",
                          reply_markup=bottom_markup())
     except Exception as e:
-        pass
+        logger.error(e)
+        return
 
 
 @bot.message_handler(commands=['cat_musice'])
@@ -57,7 +61,8 @@ def cat_all_musice(message):
     try:
         all_musice = get_all_music_list()
         bot.send_message(message.chat.id, '服务器总计：{} 部资源，请大家踊跃上传高质量音乐'.format(len(all_musice)))
-    except:
+    except Exception as e:
+        logger.error(e)
         return
 
 
@@ -86,7 +91,8 @@ def send_music_file(call):
                 mark = InlineKeyboardMarkup()
                 for one in random.sample(music_list, 10):
                     mark.add(InlineKeyboardButton(text=one, callback_data='music_{}_type_{}'.format(one, music_type)))
-                mark.add(InlineKeyboardButton(text='返回目录', callback_data='go_last'))
+                mark.add(InlineKeyboardButton(text='返回目录', callback_data='go_last'),
+                         InlineKeyboardButton(text='换一批', callback_data='type_{}'.format(music_type)))
                 bot.edit_message_text(music_type + '随机10首', chat_id=call.message.chat.id,
                                       message_id=call.message.message_id,
                                       reply_markup=mark)
@@ -97,8 +103,9 @@ def send_music_file(call):
                 msg = bot.send_message(call.message.chat.id,
                                        '请输入上传类型 歌曲名称空格隔开，\n如：热门DJ舞曲  狂浪\n  输入：q 退出输入模式！\nPlease enter the type of upload and the name of the song, \nseparated by a space,For Example: Englishsongs  happyBirthday')
                 bot.register_next_step_handler(msg, get_user_input_name)
-    except:
-        pass
+    except Exception as e:
+        logger.error(e)
+        return
 
 
 @bot.message_handler(func=lambda msg: msg.text)
@@ -118,7 +125,8 @@ def musin(message):
             else:
                 pass
         bot.send_message(message.chat.id, '你输入的歌名不存在，请先上传')
-    except:
+    except Exception as e:
+        logger.error(e)
         return
 
 
@@ -134,7 +142,8 @@ def get_user_input_name(message):
             input_list = message.text.split()
             msg = bot.reply_to(message, '请拖入音频文件:')
             bot.register_next_step_handler(msg, save_user_input_file, input_list)
-    except:
+    except Exception as e:
+        logger.error(e)
         bot.reply_to(message, '操作失败')
         return
 
@@ -159,7 +168,8 @@ def save_user_input_file(message, input_list):
         else:
             bot.reply_to(message, '上传的不是音频文件，请重新拖入文件上传！')
 
-    except:
+    except Exception as e:
+        logger.error(e)
         bot.reply_to(message, '上传失败')
         return
 

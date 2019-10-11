@@ -1,25 +1,14 @@
 # *--conding:utf-8--*
 import os
-API_TOKEN = '938619629:AAF3aR9AQniQzHJSb3PJChocfBnlKMLQiqs'
-
-MUSIC_PATH = os.path.abspath(os.path.join(os.getcwd(),'./music_file/'))
-URL = {
-    # 笑话
-    'joke_url': 'http://www.mxnzp.com/api/jokes/list/random',
-    # 新闻
-    'news_list': 'http://www.mxnzp.com/api/news/list?typeId=525&page=1',
-    # 请求新闻
-    'news_details': 'http://www.mxnzp.com/api/news/details',
-    # 天气
-    'weather_url': 'http://www.mxnzp.com/api/weather/current/深圳市',
-    # 手机号查询
-    'phone_url':'http://api.guaqb.cn/api.php?sj=手机号',
-    # 苹果手机序列号查询
-    'iphone_key':'http://api.guaqb.cn/api.php?ios=序列号(如dnrpkbwbg5md)',
-    # 身份证查询
-    'id_card_search':'http://api.guaqb.cn/music/id/card.php?id= 15或18位身份证号',
-    # 汇率
-    'exchange':'https://api.jisuapi.com/exchange/convert?appkey=c716da946813f180&from=CNY&to=php&amount=10',
-
-}
-
+admin_list = [631099108,]
+my_url = 'https://t.me/bibo_dear'
+bot_url = 'https://t.me/all_musices_bot'
+API_TOKEN = '817640233:AAGmVqLjw41d92gMZ1bi_8cb4h1pH_NOwLY'
+type_list = ['热门DJ舞曲', '流行金曲', '经典永恒', '小品相声', '有声小说','抖音歌曲大全','Englishsongs']
+liuxing_path = os.path.abspath(os.path.join(os.getcwd(), type_list[1]))
+yousheng_path = os.path.abspath(os.path.join(os.getcwd(), type_list[4]))
+dj_path = os.path.abspath(os.path.join(os.getcwd(), type_list[0]))
+jingdian_path = os.path.abspath(os.path.join(os.getcwd(), type_list[2]))
+xiaoping_path = os.path.abspath(os.path.join(os.getcwd(), type_list[3]))
+douyin_path = os.path.abspath(os.path.join(os.getcwd(), type_list[5]))
+english_path = os.path.abspath(os.path.join(os.getcwd(), type_list[6]))
